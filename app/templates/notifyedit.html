@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}通知方式配置{% endblock %}
+{% block title %}添加金额{% endblock %}
 
 
 {% block navbar %}
 <section class="content-header">
-    <h1>通知方式配置</h1>
+    <h1>添加金额</h1>
     <ol class="breadcrumb">
         <li><i class="fa fa-dashboard"></i> 当前位置</li>
-        <li class="active">通知方式管理</li>
-        <li class="active">通知方式配置</li>
+        <li class="active">添加金额</li>
+        <li class="active">添加金额</li>
     </ol>
 </section>
 {% endblock %}
@@ -24,35 +24,66 @@
         </div>
 
         <div class="box-body">
-            <div class="col-md-12">
+{#            <div class="col-md-10">#}
+{#                <div class="form-group">#}
+{#                    <label>{{form.account_date.label}}</label>#}
+{##}
+{#                    {{form.check_order(class_="form-control",placeholder="请输入 列表顺序")}}#}
+{##}
+{#                    <input type="date" value=form.accout_date/>#}
+{#                </div>#}
+{#            </div>#}
+            <div class="col-md-10">
                 <div class="form-group">
-                    <label>{{form.check_order.label}}</label>
-                    {{form.check_order(class_="slider form-control",placeholder="请输入 列表顺序")}}
+                    <label>{{form.account_date.label}}</label>
+
+
+                    {{form.account_date(type="date")}}
+{#                    <input type="date" value=form.accout_date/>#}
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-10">
                 <div class="form-group">
-                    <label>{{form.notify_type.label}}</label>
-                    {{form.notify_type(class_="form-control select2",placeholder="请输入")}}
+                    <label>{{form.account_month.label}}</label>
+
+                    {{form.account_month(type="month")}}
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="form-group">
-                    <label>{{form.notify_name.label}}</label>
-                    {{form.notify_name(class_="form-control",placeholder="请输入")}}
+                    <label>{{form.account_type.label}}</label>
+                    {{form.account_type(class_="form-control select2",placeholder="请输入")}}
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="form-group">
-                    <label>{{form.notify_number.label}}</label>
-                    {{form.notify_number(class_="form-control",placeholder="请输入")}}
+                    <label>{{form.account_name.label}}</label>
+                    {{form.account_name(class_="form-control",placeholder="请输入")}}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>{{form.account_money.label}}</label>
+                    {{form.account_money(class_="form-control",placeholder="金钱")}}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>{{form.account_USD.label}}</label>
+                    {{form.account_USD(class_="form-control",placeholder="请输入美金")}}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>{{form.account_BYN.label}}</label>
+                    {{form.account_BYN(class_="form-control",placeholder="请输入卢布")}}
                 </div>
             </div>
         </div>
 
         <div class="box-footer">
             <div class="col-md-12">
-                {{form.status()}}
+{#                {{form.status()}}#}
                 {{form.submit(class_="btn btn-primary pull-right")}}
             </div>
         </div>

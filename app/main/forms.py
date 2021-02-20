@@ -1,13 +1,18 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, BooleanField, PasswordField, SelectField, TextAreaField, HiddenField
+from wtforms import StringField, SubmitField, BooleanField, PasswordField, SelectField, TextAreaField, HiddenField, \
+    DateTimeField
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
-
+from datetime import datetime
 
 class CfgNotifyForm(FlaskForm):
-    check_order = StringField('排序', validators=[DataRequired(message='不能为空'), Length(0, 64, message='长度不正确')])
-    notify_type = SelectField('通知类型', choices=[('MAIL', '邮件通知'), ('SMS', '短信通知')],
-                              validators=[DataRequired(message='不能为空'), Length(0, 64, message='长度不正确')])
-    notify_name = StringField('通知人姓名', validators=[DataRequired(message='不能为空'), Length(0, 64, message='长度不正确')])
-    notify_number = StringField('通知号码', validators=[DataRequired(message='不能为空'), Length(0, 64, message='长度不正确')])
-    status = BooleanField('生效标识', default=True)
-    submit = SubmitField('提交')
+    # check_order     = StringField('排序', validators=[DataRequired(message='不能为空'), Length(0, 64, message='长度不正确')])
+    account_month   = DateTimeField("月份", format='%Y-%m',default = datetime.utcnow)
+    account_type    = SelectField('收支类型', choices=[('Z', '支出'), ('S', '收入')],
+                               validators=[DataRequired(message='不能为空'), Length(0, 64, message='长度不正确')])
+    account_name    = StringField('支付项目', validators=[DataRequired(message='不能为空'), Length(0, 64, message='长度不正确')])
+    account_money   = StringField('金钱', validators=[DataRequired(message='不能为空'), Length(0, 64, message='长度不正确')])
+    status          = BooleanField('生效标识', default=True)
+    account_date    = DateTimeField("时间", format='%Y-%m-%d',default = datetime.utcnow)
+    account_USD     = StringField('美金')
+    account_BYN     = StringField('卢布')
+    submit          = SubmitField('提交')

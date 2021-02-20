@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from peewee import MySQLDatabase, Model, CharField, BooleanField, IntegerField
+from peewee import MySQLDatabase, Model, CharField, BooleanField, IntegerField,FloatField,DateTimeField
 import json
 from werkzeug.security import check_password_hash
 from flask_login import UserMixin
@@ -19,7 +19,7 @@ class BaseModel(Model):
 
     def __str__(self):
         r = {}
-        for k in self._data.keys():
+        for k in self.__data__.keys():
             try:
                 r[k] = str(getattr(self, k))
             except:
@@ -43,11 +43,14 @@ class User(UserMixin, BaseModel):
 
 # 通知人配置
 class CfgNotify(BaseModel):
-    check_order = IntegerField()  # 排序
-    notify_type = CharField()  # 通知类型：MAIL/SMS
-    notify_name = CharField()  # 通知人姓名
-    notify_number = CharField()  # 通知号码
-    status = BooleanField(default=True)  # 生效失效标识
+    # check_order = IntegerField()  # 排序
+    account_type    =   CharField()  # 收支类型
+    account_name    =   CharField()  # 支付名称
+    account_date    =   DateTimeField()  # 时间
+    account_month   =   DateTimeField() # 月份
+    account_money   =   FloatField() #钱
+    account_USD     =   FloatField()
+    account_BYN     =   FloatField()
 
 
 @login_manager.user_loader

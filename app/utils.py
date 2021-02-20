@@ -3,10 +3,11 @@
 import html
 import json
 import datetime
+import re
 from urllib.parse import unquote
 from app.models import CfgNotify
 from flask import Response, flash
-
+from datetime import  datetime
 
 ## 字符串转字典
 def str_to_dict(dict_str):
@@ -15,7 +16,11 @@ def str_to_dict(dict_str):
     else:
         new_dict = ""
     return new_dict
-
+## 时间格式化
+def time_to_format_month(time):
+    return time.strftime('%y年%b月')
+def time_to_format_date(time):
+    return time.strftime('%Y-%m-%d')
 
 ## URL解码
 def urldecode(raw_str):
@@ -52,7 +57,8 @@ def dict_to_obj(dict, obj, exclude=None):
 
 # peewee转dict
 def obj_to_dict(obj, exclude=None):
-    dict = obj.__dict__['_data']
+    dict = obj.__dict__["__data__"]
+
     if exclude:
         for key in exclude:
             if key in dict: dict.pop(key)
@@ -64,6 +70,8 @@ def query_to_list(query, exclude=None):
     list = []
     for obj in query:
         dict = obj_to_dict(obj, exclude)
+        dict["account_month"]=time_to_format_month(dict["account_month"])
+        dict["account_date"] = time_to_format_date(dict["account_date"])
         list.append(dict)
     return list
 

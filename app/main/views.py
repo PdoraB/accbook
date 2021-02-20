@@ -6,6 +6,8 @@ from app import utils
 from app.models import CfgNotify
 from app.main.forms import CfgNotifyForm
 from . import main
+from app.account.account import change_rate
+import pandas as pd
 
 logger = get_logger(__name__)
 cfg = get_config()
@@ -29,12 +31,15 @@ def common_list(DynamicModel, view):
     # 查询列表
     query = DynamicModel.select()
     total_count = query.count()
-
-    # 处理分页
+    #
+    # # 处理分页
     if page: query = query.paginate(page, length)
 
+    #
     dict = {'content': utils.query_to_list(query), 'total_count': total_count,
             'total_page': math.ceil(total_count / length), 'page': page, 'length': length}
+
+
     return render_template(view, form=dict, current_user=current_user)
 
 
@@ -58,14 +63,39 @@ def common_edit(DynamicModel, form, view):
         # 新增
         if form.validate_on_submit():
             model = DynamicModel()
+
             utils.form_to_model(form, model)
+
+            if model.account_money!="":
+
+                model.account_USD = round(float(model.account_money) * change_rate("CNY","USD"), 2)
+                model.account_BYN = round(float(model.account_money)   / change_rate("BYN","CNY"), 2)
+
+            elif model.account_USD !="":
+                model.account_money = round(float(model.account_USD) * change_rate("USD","CNY"), 2)
+                model.account_BYN = round(float(model.account_USD) * change_rate("USD","BYN"), 2)
+            elif model.account_BYN!="":
+                model.account_USD = round(float(model.account_BYN) / change_rate("USD","BYN"), 2)
+                model.account_money = round(float(model.account_BYN) * change_rate("BYN","CNY"), 2)
+
             model.save()
             flash('保存成功')
         else:
             utils.flash_errors(form)
+
     return render_template(view, form=form, current_user=current_user)
 
+def index_plot(DynamicModel, view):
+    query = DynamicModel.select()
+    query_df =pd.DataFrame(list(query.dicts()))
+    dict = {
+        "account_name":list(query_df.groupby("account_month").sum().index),
+        "account_money":query_df.groupby("account_month").sum()["account_money"].to_list(),
+        'content': utils.query_to_list(query),
+            }
 
+
+    return render_template(view, form=dict, current_user=current_user)
 # 根目录跳转
 @main.route('/', methods=['GET'])
 @login_required
@@ -77,7 +107,7 @@ def root():
 @main.route('/index', methods=['GET'])
 @login_required
 def index():
-    return render_template('index.html', current_user=current_user)
+    return index_plot(CfgNotify, 'index.html')
 
 
 # 通知方式查询
