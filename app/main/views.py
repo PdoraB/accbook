@@ -8,6 +8,7 @@ from app.main.forms import CfgNotifyForm
 from . import main
 from app.account.account import change_rate
 import pandas as pd
+from datetime import datetime
 
 logger = get_logger(__name__)
 cfg = get_config()
@@ -88,10 +89,20 @@ def common_edit(DynamicModel, form, view):
 def index_plot(DynamicModel, view):
     query = DynamicModel.select()
     query_df =pd.DataFrame(list(query.dicts()))
+    Expenses = query_df[query_df["account_type"] == "Z"]
+    month_time = Expenses.groupby("account_month").sum().index
+    month_time = [i.strftime('%y-%m') for i in month_time]
+    print(query_df.groupby("account_date").sum())
+
     dict = {
-        "account_name":list(query_df.groupby("account_month").sum().index),
-        "account_money":query_df.groupby("account_month").sum()["account_money"].to_list(),
+
         'content': utils.query_to_list(query),
+        "account_name": list(month_time),
+        "account_money": Expenses.groupby("account_month").sum()["account_money"].to_list(),
+        "days_statistic":Expenses.groupby("account_date").sum()["account_money"][-1],
+        "months_statistic":Expenses.groupby("account_month").sum()["account_money"][-1],
+        "Ruble":round(change_rate("BYN","CNY"), 2),
+        "USDs":round( change_rate("USD","CNY"), 2)
             }
 
 

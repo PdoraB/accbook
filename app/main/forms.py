@@ -10,7 +10,7 @@ class CfgNotifyForm(FlaskForm):
     account_type    = SelectField('收支类型', choices=[('Z', '支出'), ('S', '收入')],
                                validators=[DataRequired(message='不能为空'), Length(0, 64, message='长度不正确')])
     account_name    = StringField('支付项目', validators=[DataRequired(message='不能为空'), Length(0, 64, message='长度不正确')])
-    account_money   = StringField('金钱', validators=[DataRequired(message='不能为空'), Length(0, 64, message='长度不正确')])
+    account_money   = StringField('金钱', )
     status          = BooleanField('生效标识', default=True)
     account_date    = DateTimeField("时间", format='%Y-%m-%d',default = datetime.utcnow)
     account_USD     = StringField('美金')
