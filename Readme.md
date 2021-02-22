@@ -29,6 +29,16 @@ DB_DATABASE = 'foobar'
 
 ```
 ```shell
+数据库初始化
+自动建表 直接运行python3 models.py
+
+插入管理员用户（默认admin/admin)
+
+INSERT INTO `user` (`id`, `username`, `password`, `fullname`, `email`, `phone`, `status`)
+VALUES
+	(1, 'admin', 'pbkdf2:sha1:1000$Km1vdx3W$9aa07d3b79ab88aae53e45d26d0d4d4e097a6cd3', '管理员', 'admi
+```
+```shell
 编辑log-app.conf，修改日志路径
 args=('/path/to/log/flask-rest-sample.log','a','utf8')
 ```
