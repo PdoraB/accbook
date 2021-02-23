@@ -69,15 +69,15 @@ def common_edit(DynamicModel, form, view):
 
             if model.account_money!="":
 
-                model.account_USD = round(float(model.account_money) * change_rate("CNY","USD"), 2)
-                model.account_BYN = round(float(model.account_money)   / change_rate("BYN","CNY"), 2)
+                model.account_USD = round(float(model.account_money) * change_rate("CNY","USD"), 3)
+                model.account_BYN = round(float(model.account_money)   / change_rate("BYN","CNY"), 3)
 
-            elif model.account_USD !="":
-                model.account_money = round(float(model.account_USD) * change_rate("USD","CNY"), 2)
-                model.account_BYN = round(float(model.account_USD) * change_rate("USD","BYN"), 2)
+            elif model.account_USD !="" or model.account_USD !=0.0:
+                model.account_money = round(float(model.account_USD) * change_rate("USD","CNY"), 3)
+                model.account_BYN = round(float(model.account_USD) * change_rate("USD","BYN"), 3)
             elif model.account_BYN!="":
-                model.account_USD = round(float(model.account_BYN) / change_rate("USD","BYN"), 2)
-                model.account_money = round(float(model.account_BYN) * change_rate("BYN","CNY"), 2)
+                model.account_USD = round(float(model.account_BYN) / change_rate("USD","BYN"), 3)
+                model.account_money = round(float(model.account_BYN) * change_rate("BYN","CNY"), 3)
 
             model.save()
             flash('保存成功')
@@ -89,22 +89,21 @@ def common_edit(DynamicModel, form, view):
 def index_plot(DynamicModel, view):
     query = DynamicModel.select()
     query_df =pd.DataFrame(list(query.dicts()))
-    Expenses = query_df[query_df["account_type"] == "Z"]
+    Expenses = query_df[query_df["account_type"] == "Z"].round(3)
     month_time = Expenses.groupby("account_month").sum().index
     month_time = [i.strftime('%y-%m') for i in month_time]
-    print(query_df.groupby("account_date").sum())
+
 
     dict = {
 
         'content': utils.query_to_list(query),
         "account_name": list(month_time),
-        "account_money": Expenses.groupby("account_month").sum()["account_money"].to_list(),
-        "days_statistic":Expenses.groupby("account_date").sum()["account_money"][-1],
-        "months_statistic":Expenses.groupby("account_month").sum()["account_money"][-1],
+        "account_money": Expenses.groupby("account_month").sum()["account_money"].round(3).to_list(),
+        "days_statistic":Expenses.groupby("account_date").sum()["account_money"][-1].round(3),
+        "months_statistic":Expenses.groupby("account_month").sum()["account_money"][-1].round(3),
         "Ruble":round(change_rate("BYN","CNY"), 2),
         "USDs":round( change_rate("USD","CNY"), 2)
             }
-
 
     return render_template(view, form=dict, current_user=current_user)
 # 根目录跳转

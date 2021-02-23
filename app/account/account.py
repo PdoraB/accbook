@@ -28,4 +28,4 @@ def change_rate(money,money2)->float:
 
 
 
-print(change_rate("BYN","CNY"))
+print(change_rate("CNY","USD"))
