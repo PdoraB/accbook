@@ -70,13 +70,13 @@ def common_edit(DynamicModel, form, view):
             if model.account_money!="":
 
                 model.account_USD = round(float(model.account_money) * change_rate("CNY","USD"), 3)
-                model.account_BYN = round(float(model.account_money)   / change_rate("BYN","CNY"), 3)
+                model.account_BYN = round(float(model.account_money)   * change_rate("CNY","BYN"), 3)
 
-            elif model.account_USD !="" or model.account_USD !=0.0:
+            elif model.account_USD !="" :
                 model.account_money = round(float(model.account_USD) * change_rate("USD","CNY"), 3)
                 model.account_BYN = round(float(model.account_USD) * change_rate("USD","BYN"), 3)
             elif model.account_BYN!="":
-                model.account_USD = round(float(model.account_BYN) / change_rate("USD","BYN"), 3)
+                model.account_USD = round(float(model.account_BYN) * change_rate("BYN","USD"), 3)
                 model.account_money = round(float(model.account_BYN) * change_rate("BYN","CNY"), 3)
 
             model.save()
