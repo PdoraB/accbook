@@ -99,7 +99,25 @@
             series: [{
                 name: '每月花费',
                 type: 'bar',
-                data: {{form.account_money}}
+                data: {{form.account_money}},
+                itemStyle: {
+							normal: {
+
+                                // 随机显示
+                                color: function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);
+                                },
+
+								label: {
+									show: true, //开启显示
+									position: 'top', //在上方显示
+									textStyle: { //数值样式
+										color: 'black',
+										fontSize: 16
+									            }
+								        }
+							        }
+                            },
+
             }]
         };
         var lineoption = {
@@ -112,13 +130,30 @@
             },
             xAxis: {
 
-                data: [{% for m in form.account_name %}'{{ m }}', {% endfor %}],
+                data: [{% for m in form.hist_name %}'{{ m }}', {% endfor %}],
             },
             yAxis: {},
             series: [{
                 name: '每月花费',
-                type: 'line',
-                data: [{% for m in form.account_money %}'{{ m }}', {% endfor %}]
+                type: 'bar',
+                data: [{% for m in form.hist_count %}'{{ m }}', {% endfor %}],
+                itemStyle: {
+							normal: {
+
+                                // 随机显示
+                                color: function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);
+                                },
+
+								label: {
+									show: true, //开启显示
+									position: 'top', //在上方显示
+									textStyle: { //数值样式
+										color: 'black',
+										fontSize: 16
+									            }
+								        }
+							        }
+                            },
             }]
         };
 
