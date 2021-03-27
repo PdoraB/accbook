@@ -92,8 +92,9 @@ def index_plot(DynamicModel, view):
     Expenses = query_df[query_df["account_type"] == "Z"].round(3)
     month_time = Expenses.groupby("account_month").sum().index
     month_time = [i.strftime('%y-%m') for i in month_time]
-
+    Expenses['account_date']=pd.to_datetime(Expenses['account_date'])
     nowtime = datetime.now().strftime("%Y-%m")
+
 
     dict = {
         'content': utils.query_to_list(query),
@@ -103,8 +104,8 @@ def index_plot(DynamicModel, view):
         "months_statistic":Expenses.groupby("account_month").sum()["account_money"][-1].round(3),
         "Ruble":round(change_rate("BYN","CNY"), 2),
         "USDs":round( change_rate("USD","CNY"), 2),
-        "hist_count":Expenses.set_index('account_date')[nowtime].groupby("account_name").sum()["account_money"].round(3).to_list(),
-        "hist_name":Expenses.set_index('account_date')[nowtime].groupby("account_name").sum().index
+        "hist_count":Expenses.set_index('account_date').sort_index()[nowtime].groupby("account_name").sum()["account_money"].round(3).to_list(),
+        "hist_name":Expenses.set_index('account_date').sort_index()[nowtime].groupby("account_name").sum().index
             }
 
     return render_template(view, form=dict, current_user=current_user)
