@@ -49,18 +49,52 @@
                     {{form.account_month(type="month")}}
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-10">
                 <div class="form-group">
                     <label>{{form.account_type.label}}</label>
                     {{form.account_type(class_="form-control select2",placeholder="请输入")}}
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-10">
                 <div class="form-group">
                     <label>{{form.account_name.label}}</label>
-                    {{form.account_name(class_="form-control",placeholder="请输入")}}
+
+{#                            <datalist id="typelist">#}
+{#　　                              <option>外卖</option>#}
+{#                                <option>打车</option>#}
+{#                                <option>咖啡</option>#}
+{#                                <option>超市</option>#}
+{#                                <option>地铁</option>#}
+{#                                <option>游戏</option>#}
+{#                                <option>水</option>#}
+{#                                <option>购物</option>#}
+{#                    <label for="proname"></label><input id="proname" type="text" placeholder="请选择" >#}
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            项目名称
+                            <span class="caret"></span>
+                        </button>
+                        <ul id="project" class="dropdown-menu">
+                            <li value="account"><a href="#">外卖</a></li>
+                            <li class="divider"></li>
+                            <li value="drive"><a href="#">打车</a></li>
+                            <li class="divider"></li>
+                            <li value="subway"><a href="#">地铁</a></li>
+                            <li class="divider"></li>
+                            <li value="kafa"><a href="#">咖啡</a></li>
+                            <li class="divider"></li>
+                            <li value="supermarket"><a href="#">超市</a></li>
+                            <li class="divider"></li>
+                            <li value="game"><a href="#">游戏</a></li>
+                            <li class="divider"></li>
+                            <li value="water"><a href="#">水</a></li>
+                            <li class="divider"></li>
+                            <li value="buy"><a href="#">购物</a></li>
+                        </ul>
+
+                    {{form.account_name(class_="form-control proname",placeholder="请输入",id="proname",type="input" ,list="typelist",render_kw="input")}}
                 </div>
             </div>
+
             <div class="col-md-3">
                 <div class="form-group">
                     <label>{{form.account_money.label}}</label>
@@ -108,8 +142,17 @@
             offText: '失效'
 
         });
-
+        $("#project").on("click", "li", function(){
+        $("#proname").val($(this).text());
+                                                    });
         $(".select2").select2();
     }
+    $("#project").on("click", "li", function(){
+        $("#proname").val($(this).text());
+                                                    });
+    document.getElementById('uiSel').onchange=function (){
+                if(this.options[0].value==-1)this.options[0]=null;
+                    document.getElementById('show').value=this.value
+                                                            };
 </script>
 {% endblock %}
