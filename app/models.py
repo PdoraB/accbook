@@ -25,6 +25,7 @@ class BaseModel(Model):
             except:
                 r[k] = json.dumps(getattr(self, k))
         # return str(r)
+
         return json.dumps(r, ensure_ascii=False)
 
 

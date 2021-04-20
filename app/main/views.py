@@ -30,7 +30,7 @@ def common_list(DynamicModel, view):
             flash('删除失败')
 
     # 查询列表
-    query = DynamicModel.select()
+    query = DynamicModel.select().order_by(DynamicModel.account_date.desc())
     total_count = query.count()
     #
     # # 处理分页
