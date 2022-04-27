@@ -33,3 +33,6 @@ def change_rate(money,money2)->float:
         return Results
 
 
+
+print(change_rate("USD","BYN"))
+print(10000*change_rate("CNY","USD")*change_rate("USD","BYN"))
